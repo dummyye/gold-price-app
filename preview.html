@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黄金价格 App 预览</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: #000;
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #1A1A2E 0%, #16213E 50%, #0F3460 100%);
+            border-radius: 30px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 32px;
+            position: relative;
+        }
+
+        .notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: #000;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 48px;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .price-card {
+            width: 100%;
+            height: 200px;
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            margin-bottom: 24px;
+        }
+
+        .currency-symbol {
+            font-size: 32px;
+            color: #FFD700;
+            font-weight: 300;
+        }
+
+        .price {
+            font-size: 48px;
+            font-weight: bold;
+            color: #FFD700;
+            line-height: 1;
+        }
+
+        .unit {
+            font-size: 18px;
+            color: #A0A0A0;
+            margin-top: 8px;
+        }
+
+        .update-time {
+            font-size: 14px;
+            color: #808080;
+            margin-bottom: 16px;
+        }
+
+        .refresh-button {
+            width: 100%;
+            height: 56px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1A1A2E;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .refresh-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .refresh-button:active {
+            transform: translateY(0);
+        }
+
+        .info-section {
+            margin-top: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 400px;
+        }
+
+        .info-section h2 {
+            color: #1A1A2E;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .info-section ul {
+            color: #333;
+            line-height: 1.8;
+            padding-left: 20px;
+        }
+
+        .info-section li {
+            margin-bottom: 8px;
+        }
+
+        .download-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 215, 0, 0.2);
+            border-top-color: #FFD700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .feature-text {
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 40px;">
+        <!-- Phone Preview -->
+        <div class="phone-frame">
+            <div class="phone-screen">
+                <div class="notch"></div>
+                
+                <div class="title">💰 黄金价格</div>
+                
+                <div class="price-card">
+                    <div class="currency-symbol">¥</div>
+                    <div class="price">550</div>
+                    <div class="unit">元/克</div>
+                </div>
+                
+                <div class="update-time">更新时间：2026-03-18 16:21:00</div>
+                
+                <button class="refresh-button">🔄 刷新价格</button>
+            </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="info-section">
+            <h2>📱 应用特性</h2>
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🎨</div>
+                    <div class="feature-text">精美 UI 设计</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-text">实时价格</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-text">多机型适配</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔄</div>
+                    <div class="feature-text">一键刷新</div>
+                </div>
+            </div>
+
+            <div class="download-section">
+                <h3>📦 构建说明</h3>
+                <ul>
+                    <li><strong>技术栈:</strong> Kotlin + Jetpack Compose</li>
+                    <li><strong>最低版本:</strong> Android 7.0 (API 24)</li>
+                    <li><strong>目标版本:</strong> Android 14 (API 34)</li>
+                    <li><strong>适配机型:</strong> 华为、小米、OPPO、vivo、三星等</li>
+                </ul>
+
+                <h3>🔧 构建 APK 步骤</h3>
+                <ol style="margin-left: 20px; line-height: 1.8;">
+                    <li>安装 Android Studio</li>
+                    <li>打开项目文件夹 <code>gold-price-app</code></li>
+                    <li>等待 Gradle 同步完成</li>
+                    <li>点击 <code>Build → Build Bundle(s) / APK(s) → Build APK(s)</code></li>
+                    <li>APK 文件位于 <code>app/build/outputs/apk/debug/</code></li>
+                </ol>
+
+                <p style="margin-top: 15px; color: #666; font-size: 14px;">
+                    💡 <strong>提示:</strong> 项目代码已准备就绪，使用 Android Studio 打开即可一键构建 APK
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟实时价格更新
+        setInterval(() => {
+            const priceElement = document.querySelector('.price');
+            const basePrice = 550;
+            const fluctuation = Math.floor(Math.random() * 10) - 5;
+            priceElement.textContent = basePrice + fluctuation;
+            
+            const timeElement = document.querySelector('.update-time');
+            const now = new Date();
+            timeElement.textContent = '更新时间：' + now.toLocaleString('zh-CN');
+        }, 5000);
+
+        // 按钮点击效果
+        document.querySelector('.refresh-button').addEventListener('click', function() {
+            this.textContent = '⏳ 刷新中...';
+            setTimeout(() => {
+                this.textContent = '🔄 刷新价格';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
